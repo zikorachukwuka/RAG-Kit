@@ -2,23 +2,23 @@
 
 A copy-paste RAG system for Next.js developers. Drop it into any project, point it at your documents, and ship a production-grade AI assistant in an afternoon.
 
-**[→ See the live demo](https://your-demo-url.vercel.app)** — a Nigerian Compliance AI built entirely with RAG Kit.
+**[→ See the live demo](https://your-demo-url.vercel.app)**, a Nigerian Compliance AI built entirely with RAG Kit.
 
 ---
 
 ## What it is
 
-RAG Kit is a collection of files you copy into your Next.js project and own. No package to install, no framework to fight. Just clean, well-structured TypeScript you understand and control — inspired by the [shadcn/ui](https://ui.shadcn.com) distribution model.
+RAG Kit is a collection of files you copy into your Next.js project and own. No package to install, no framework to fight. Just clean, well-structured TypeScript you understand and control, inspired by the [shadcn/ui](https://ui.shadcn.com) distribution model.
 
 ### What you get
 
 | File | What it does |
 |---|---|
 | `schema.sql` | Full Postgres + pgvector setup in one command |
-| `lib/db.ts` | Postgres connection — works with Supabase, Neon, Railway, or any provider |
+| `lib/db.ts` | Postgres connection that works with Supabase, Neon, Railway, or any provider |
 | `lib/embeddings.ts` | OpenAI-compatible embedding adapter |
 | `lib/chat.ts` | OpenAI-compatible chat adapter |
-| `app/api/chat/route.ts` | Chat route — RAG retrieval + AI response + gap logging |
+| `app/api/chat/route.ts` | Chat route handling RAG retrieval, AI response, and gap logging |
 | `app/api/conversations/route.ts` | Conversation management |
 | `components/ChatWidget.tsx` | Drop-in React chat widget |
 | `config/system-prompt.ts` | Edit this to give the AI its name, persona, and domain rules |
@@ -28,7 +28,7 @@ RAG Kit is a collection of files you copy into your Next.js project and own. No 
 
 ## Provider-agnostic by design
 
-RAG Kit speaks the OpenAI API format for both embeddings and chat. Any compatible provider works — you configure it entirely through environment variables.
+RAG Kit speaks the OpenAI API format for both embeddings and chat. Any compatible provider works, configured entirely through environment variables.
 
 ```bash
 # Embedding — any /v1/embeddings compatible endpoint
@@ -126,7 +126,7 @@ export default function RootLayout({ children }) {
 
 ### 7. Customise the system prompt
 
-Edit `config/system-prompt.ts` to give the AI its name, persona, and domain-specific rules. This is the most important customisation — it's what makes the assistant feel like yours.
+Edit `config/system-prompt.ts` to give the AI its name, persona, and domain-specific rules. This is the most important customisation and it's what makes the assistant feel like yours.
 
 ---
 
