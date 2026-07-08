@@ -9,93 +9,230 @@ const SAMPLE_QUESTIONS = [
   'What is the current minimum wage in Nigeria?',
 ]
 
+const STEPS = [
+  {
+    num: '01',
+    title: 'Run the schema',
+    desc: 'Copy schema.sql and run it against any Postgres database with pgvector enabled.',
+  },
+  {
+    num: '02',
+    title: 'Configure your providers',
+    desc: 'Set EMBEDDING_BASE_URL, EMBEDDING_MODEL, CHAT_BASE_URL, and CHAT_MODEL. Any OpenAI-compatible provider works.',
+  },
+  {
+    num: '03',
+    title: 'Ingest your documents',
+    desc: 'Drop .txt or .md files in a folder and run the ingest script to embed them.',
+  },
+  {
+    num: '04',
+    title: 'Add the widget',
+    desc: 'Drop ChatWidget.tsx into your layout. Ship.',
+  },
+]
+
+const TOPICS = ['PAYE', 'Pension', 'NSITF', 'NHF', 'WHT', 'Minimum Wage']
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <>
+      <div className="dot-bg min-h-screen">
+        <div className="hero-glow" />
 
-      {/* Hero */}
-      <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <a
-          href="https://github.com/zikorachukwuka/RAG-Kit"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 transition"
-        >
-          Built with RAG Kit · view on GitHub →
-        </a>
-        <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Nigeria Compliance AI
-        </h1>
-        <p className="mt-4 text-lg text-gray-500">
-          Ask questions about Nigerian statutory obligations: PAYE, Pension, NHF,
-          NSITF, and WHT. Accurate answers grounded in up-to-date compliance documentation.
-        </p>
-        <p className="mt-3 text-sm text-gray-400">
-          General information only. Verify all obligations with a qualified professional.
-        </p>
-      </section>
-
-      {/* Sample questions */}
-      <section className="mx-auto max-w-2xl px-6 pb-24">
-        <h2 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-gray-400">
-          Try asking
-        </h2>
-        <ul className="space-y-2">
-          {SAMPLE_QUESTIONS.map((q) => (
-            <li
-              key={q}
-              className="rounded-xl border border-gray-100 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm"
+        {/* Nav */}
+        <nav className="relative z-10 mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+          <div className="flex items-center gap-2.5">
+            <div className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span
+              className="text-sm font-medium"
+              style={{ color: 'rgba(255,255,255,0.6)' }}
             >
-              {q}
-            </li>
-          ))}
-        </ul>
-      </section>
+              Nigerian HR Compliance AI
+            </span>
+          </div>
+          <a
+            href="https://github.com/zikorachukwuka/RAG-Kit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs transition-colors"
+            style={{ color: 'rgba(255,255,255,0.3)' }}
+            onMouseOver={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+            onMouseOut={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
+          >
+            Built with RAG Kit →
+          </a>
+        </nav>
 
-      {/* How it works */}
-      <section className="border-t border-gray-100 bg-white px-6 py-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-2 text-center text-2xl font-bold text-gray-900">
-            Add this to your own project
-          </h2>
-          <p className="mb-10 text-center text-sm text-gray-400">
-            This demo was built with RAG Kit, a copy-paste RAG system for Next.js.
+        {/* Hero */}
+        <section className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-20 text-center">
+          {/* Live badge */}
+          <div
+            className="mb-8 inline-flex items-center gap-2 rounded-full px-3 py-1"
+            style={{
+              border: '1px solid rgba(255,255,255,0.09)',
+              background: 'rgba(255,255,255,0.04)',
+            }}
+          >
+            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              NTA 2025 · Effective January 2026
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1
+            className="text-5xl font-light leading-tight tracking-tight sm:text-7xl"
+            style={{
+              fontFamily: 'var(--font-display), Georgia, serif',
+              color: 'rgba(255,255,255,0.92)',
+            }}
+          >
+            Nigerian HR compliance,
+            <br />
+            <span style={{ color: '#4ade80' }}>answered.</span>
+          </h1>
+
+          {/* Subline */}
+          <p
+            className="mx-auto mt-6 max-w-md text-base leading-relaxed"
+            style={{ color: 'rgba(255,255,255,0.35)' }}
+          >
+            Ask questions about PAYE, Pension, NHF, NSITF, and WHT obligations.
+            Grounded in current Nigerian Tax Act regulations.
           </p>
-          <ol className="space-y-6">
-            {[
-              { step: '1', title: 'Run the schema', body: 'Copy schema.sql and run it against any Postgres database with pgvector enabled.' },
-              { step: '2', title: 'Configure your providers', body: 'Copy .env.example, set EMBEDDING_BASE_URL, EMBEDDING_MODEL, CHAT_BASE_URL, and CHAT_MODEL. Any OpenAI-compatible provider works.' },
-              { step: '3', title: 'Ingest your documents', body: 'Drop your .txt or .md files in a folder and run: npm run ingest -- ./your-docs' },
-              { step: '4', title: 'Drop in the widget', body: 'Copy ChatWidget.tsx into your project and add <ChatWidget /> to your layout. Done.' },
-            ].map(({ step, title, body }) => (
-              <li key={step} className="flex gap-4">
-                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">{step}</span>
-                <div>
-                  <p className="font-semibold text-gray-900">{title}</p>
-                  <p className="mt-1 text-sm text-gray-500">{body}</p>
-                </div>
+
+          {/* Topic pills */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {TOPICS.map((t) => (
+              <span
+                key={t}
+                className="rounded-full px-3 py-1 text-xs"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: 'rgba(255,255,255,0.35)',
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <p className="mt-6 text-xs" style={{ color: 'rgba(255,255,255,0.18)' }}>
+            General information only · Not legal advice
+          </p>
+        </section>
+
+        {/* Sample questions */}
+        <section className="relative z-10 mx-auto max-w-xl px-6 pb-24">
+          <p
+            className="mb-6 text-center text-xs font-semibold uppercase tracking-widest"
+            style={{ color: 'rgba(255,255,255,0.18)' }}
+          >
+            Try asking
+          </p>
+          <ul className="space-y-2">
+            {SAMPLE_QUESTIONS.map((q) => (
+              <li
+                key={q}
+                className="q-card flex cursor-default items-center gap-3 rounded-xl px-5 py-4 text-sm"
+                style={{ color: 'rgba(255,255,255,0.5)' }}
+              >
+                <span className="font-mono text-xs" style={{ color: 'rgba(74,222,128,0.5)' }}>
+                  →
+                </span>
+                {q}
               </li>
             ))}
-          </ol>
-          <div className="mt-10 text-center">
-            <a
-              href="https://github.com/zikorachukwuka/RAG-Kit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-700 transition"
+          </ul>
+        </section>
+
+        {/* How it works */}
+        <section
+          className="divider relative z-10 border-t px-6 py-20"
+        >
+          <div className="mx-auto max-w-3xl">
+            <p
+              className="mb-3 text-center text-xs font-semibold uppercase tracking-widest"
+              style={{ color: 'rgba(255,255,255,0.18)' }}
             >
-              View RAG Kit on GitHub →
-            </a>
+              For developers
+            </p>
+            <h2
+              className="mb-12 text-center text-2xl font-light"
+              style={{
+                fontFamily: 'var(--font-display), Georgia, serif',
+                color: 'rgba(255,255,255,0.85)',
+              }}
+            >
+              Add this to your own project
+            </h2>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {STEPS.map(({ num, title, desc }) => (
+                <div key={num} className="step-card rounded-2xl p-6">
+                  <span
+                    className="text-4xl font-light"
+                    style={{
+                      fontFamily: 'var(--font-display), Georgia, serif',
+                      color: 'rgba(255,255,255,0.08)',
+                    }}
+                  >
+                    {num}
+                  </span>
+                  <p
+                    className="mt-3 text-sm font-medium"
+                    style={{ color: 'rgba(255,255,255,0.65)' }}
+                  >
+                    {title}
+                  </p>
+                  <p
+                    className="mt-1 text-xs leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.3)' }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <a
+                href="https://github.com/zikorachukwuka/RAG-Kit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm transition-all"
+                style={{
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.04)',
+                  color: 'rgba(255,255,255,0.5)',
+                }}
+              >
+                View RAG Kit on GitHub →
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Footer */}
+        <footer className="divider relative z-10 border-t px-6 py-8">
+          <div className="mx-auto flex max-w-5xl items-center justify-between">
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.18)' }}>
+              © 2026 Zikora Chukwuka
+            </span>
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.18)' }}>
+              MIT License
+            </span>
+          </div>
+        </footer>
+      </div>
 
       <ChatWidget
-        title="Nigeria Compliance AI"
+        title="Nigerian HR Compliance AI"
         subtitle="General information only · Not legal advice"
         buttonLabel="Ask a question"
         placeholder="e.g. When is PAYE due?"
       />
-    </main>
+    </>
   )
 }
