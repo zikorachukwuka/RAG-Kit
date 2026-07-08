@@ -8,6 +8,23 @@ import fs   from 'fs'
 import path from 'path'
 import postgres from 'postgres'
 
+// ─── Load .env.local / .env ───────────────────────────────────────────────────
+// Next.js loads these automatically; this script runs outside Next.js so we
+// parse them ourselves. Already-set env vars are never overwritten.
+for (const envFile of ['.env.local', '.env']) {
+  const envPath = path.resolve(process.cwd(), envFile)
+  if (!fs.existsSync(envPath)) continue
+  for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const eq = trimmed.indexOf('=')
+    if (eq === -1) continue
+    const key = trimmed.slice(0, eq).trim()
+    const val = trimmed.slice(eq + 1).trim()
+    if (!(key in process.env)) process.env[key] = val
+  }
+}
+
 const DATABASE_URL       = process.env.DATABASE_URL
 const EMBEDDING_BASE_URL = process.env.EMBEDDING_BASE_URL
 const EMBEDDING_MODEL    = process.env.EMBEDDING_MODEL
@@ -21,7 +38,7 @@ const CHUNK_SIZE    = 1000
 const CHUNK_OVERLAP = 200
 const BATCH_SIZE    = 20
 
-const sql = postgres(DATABASE_URL!, { max: 3 })
+const sql = postgres(DATABASE_URL!, { max: 3, ssl: 'require' })
 
 function chunkText(text: string): string[] {
   const chunks: string[] = []
@@ -44,7 +61,7 @@ function collectFiles(dir: string): string[] {
   return results
 }
 
-async function embedBatch(inputs: string[]): Promise<number[][]> {
+async function embedBatch(inputs: string[], retries = 3): Promise<number[][]> {
   const res = await fetch(`${EMBEDDING_BASE_URL}/embeddings`, {
     method: 'POST',
     headers: {
@@ -53,6 +70,12 @@ async function embedBatch(inputs: string[]): Promise<number[][]> {
     },
     body: JSON.stringify({ model: EMBEDDING_MODEL, input: inputs }),
   })
+  if (res.status === 429 && retries > 0) {
+    const wait = 25000
+    process.stdout.write(`\n   ⏳  Rate limited — waiting ${wait / 1000}s before retry...\r`)
+    await new Promise((r) => setTimeout(r, wait))
+    return embedBatch(inputs, retries - 1)
+  }
   if (!res.ok) { const body = await res.text(); throw new Error(`Embedding API error ${res.status}: ${body}`) }
   const data = await res.json() as { data: { embedding: number[]; index: number }[] }
   return data.data.sort((a, b) => a.index - b.index).map((d) => d.embedding)
