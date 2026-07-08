@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS knowledge_base (
   content    TEXT        NOT NULL,
   source     TEXT,                         -- e.g. filename or URL
   metadata   JSONB       DEFAULT '{}',
-  embedding  VECTOR(1536) NOT NULL,
+  embedding  VECTOR(1536) NOT NULL,  -- ⚠ CHANGE 1536 to match your EMBEDDING_DIMENSIONS (see comment above)
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

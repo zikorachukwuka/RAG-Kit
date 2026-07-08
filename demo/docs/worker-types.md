@@ -53,3 +53,14 @@ The national minimum wage is ₦70,000 per month. This applies to all employees 
 - 15 or more workers: pension is mandatory for all qualifying employees.
 - 3 to 15 workers: the law is silent, but remitting pension is strongly advisable and is the safer approach.
 - Fewer than 3 workers: pension contributions are voluntary.
+
+## Common questions
+
+**Does pension apply to casual workers?**
+Yes, but only once they have been engaged for 30 or more days. A casual worker engaged for fewer than 30 days is exempt from pension contributions entirely. The moment the engagement reaches or exceeds 30 days — even if it started as a short-term arrangement — pension becomes mandatory: 8% from the worker and a minimum of 10% from the employer, remitted within 7 days of salary payment.
+
+**Do contractors get pension?**
+No. Contractors are not employees and are not included in pension calculations. The only statutory deduction from a contractor payment is 5% Withholding Tax (WHT), which the paying company deducts and remits to FIRS by the 21st of the following month.
+
+**What is the difference between a casual worker and a contractor?**
+A casual worker is on the payroll — PAYE and NSITF apply, and pension applies if they work 30 or more days. A contractor is off the payroll entirely — no PAYE, no pension, no NSITF. Only WHT applies to contractor payments. Misclassifying a contractor who works exclusively for your business as a casual worker, or vice versa, carries penalty risk from FIRS and PenCom.
