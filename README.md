@@ -37,9 +37,9 @@ EMBEDDING_MODEL=text-embedding-3-small
 EMBEDDING_API_KEY=sk-...
 
 # Chat — any /v1/chat/completions compatible endpoint
-CHAT_BASE_URL=https://openrouter.ai/api/v1
-CHAT_MODEL=google/gemini-2.5-flash
-CHAT_API_KEY=sk-or-...
+CHAT_BASE_URL=https://api.groq.com/openai/v1
+CHAT_MODEL=llama-3.3-70b-versatile
+CHAT_API_KEY=gsk-...
 ```
 
 Swap providers by changing two environment variables. The code never changes.
@@ -65,10 +65,10 @@ config/system-prompt.ts
 scripts/ingest.ts
 ```
 
-### 2. Install the one dependency
+### 2. Install dependencies
 
 ```bash
-npm install postgres
+npm install postgres lucide-react
 ```
 
 ### 3. Set up your database
