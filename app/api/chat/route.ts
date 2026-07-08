@@ -91,7 +91,18 @@ export async function POST(request: Request) {
     ]
 
     // 7. Call the chat model
-    const aiResponse = await chat(chatMessages)
+    let aiResponse: string
+    try {
+      aiResponse = await chat(chatMessages)
+    } catch (aiError) {
+      console.error('AI provider error:', aiError)
+      const fallback = "I'm having trouble connecting right now. Please try again in a moment."
+      await sql`
+        INSERT INTO messages (conversation_id, role, content)
+        VALUES (${conversation_id}, 'assistant', ${fallback})
+      `.catch(() => {})
+      return NextResponse.json({ ai_response: fallback })
+    }
 
     // 8. Log gap if no knowledge base context was found
     if (!knowledgeContext) {

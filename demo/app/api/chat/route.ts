@@ -81,7 +81,18 @@ export async function POST(request: Request) {
       { role: 'user', content: message },
     ]
 
-    const aiResponse = await chat(chatMessages)
+    let aiResponse: string
+    try {
+      aiResponse = await chat(chatMessages)
+    } catch (aiError) {
+      console.error('AI provider error:', aiError)
+      const fallback = "I'm having trouble connecting right now. Please try again in a moment."
+      await sql`
+        INSERT INTO messages (conversation_id, role, content)
+        VALUES (${conversation_id}, 'assistant', ${fallback})
+      `.catch(() => {})
+      return NextResponse.json({ ai_response: fallback })
+    }
 
     if (!knowledgeContext) {
       await sql`

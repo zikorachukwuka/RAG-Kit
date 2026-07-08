@@ -21,13 +21,13 @@ export default function HomePage() {
           rel="noopener noreferrer"
           className="inline-block rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 transition"
         >
-          Built with RAG Kit — view on GitHub →
+          Built with RAG Kit · view on GitHub →
         </a>
         <h1 className="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
           Nigeria Compliance AI
         </h1>
         <p className="mt-4 text-lg text-gray-500">
-          Ask questions about Nigerian statutory obligations — PAYE, Pension, NHF,
+          Ask questions about Nigerian statutory obligations: PAYE, Pension, NHF,
           NSITF, and WHT. Accurate answers grounded in up-to-date compliance documentation.
         </p>
         <p className="mt-3 text-sm text-gray-400">
@@ -59,7 +59,7 @@ export default function HomePage() {
             Add this to your own project
           </h2>
           <p className="mb-10 text-center text-sm text-gray-400">
-            This demo was built with RAG Kit — a copy-paste RAG system for Next.js.
+            This demo was built with RAG Kit, a copy-paste RAG system for Next.js.
           </p>
           <ol className="space-y-6">
             {[
