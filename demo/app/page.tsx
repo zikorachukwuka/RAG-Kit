@@ -51,7 +51,7 @@ export default function HomePage() {
             style={{
               border: '1px solid rgba(255,255,255,0.1)',
               background: 'rgba(255,255,255,0.04)',
-              color: 'rgba(255,255,255,0.45)',
+              color: 'rgba(255,255,255,0.7)',
             }}
           >
             This demo was built with RAG Kit ↗
@@ -73,7 +73,7 @@ export default function HomePage() {
           {/* Subline */}
           <p
             className="mx-auto mt-6 max-w-md text-base leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.35)' }}
+            style={{ color: 'rgba(255,255,255,0.75)' }}
           >
             Ask questions about PAYE, Pension, NHF, NSITF, and WHT obligations.
             Grounded in current Nigerian Tax Act regulations.
@@ -87,7 +87,7 @@ export default function HomePage() {
                 className="rounded-full px-3 py-1 text-xs"
                 style={{
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.35)',
+                  color: 'rgba(255,255,255,0.6)',
                 }}
               >
                 {t}
@@ -113,7 +113,7 @@ export default function HomePage() {
               <li
                 key={q}
                 className="q-card flex cursor-default items-center gap-3 rounded-xl px-5 py-4 text-sm"
-                style={{ color: 'rgba(255,255,255,0.5)' }}
+                style={{ color: 'rgba(255,255,255,0.85)' }}
               >
                 <span className="font-mono text-xs" style={{ color: 'rgba(74,222,128,0.5)' }}>
                   →
@@ -159,13 +159,13 @@ export default function HomePage() {
                   </span>
                   <p
                     className="mt-3 text-sm font-medium"
-                    style={{ color: 'rgba(255,255,255,0.65)' }}
+                    style={{ color: 'rgba(255,255,255,0.92)' }}
                   >
                     {title}
                   </p>
                   <p
                     className="mt-1 text-xs leading-relaxed"
-                    style={{ color: 'rgba(255,255,255,0.3)' }}
+                    style={{ color: 'rgba(255,255,255,0.65)' }}
                   >
                     {desc}
                   </p>
@@ -182,7 +182,7 @@ export default function HomePage() {
                 style={{
                   border: '1px solid rgba(255,255,255,0.1)',
                   background: 'rgba(255,255,255,0.04)',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(255,255,255,0.75)',
                 }}
               >
                 View RAG Kit on GitHub →

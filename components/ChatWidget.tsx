@@ -35,6 +35,52 @@ function getOrCreateSessionId(): string {
   return id
 }
 
+// ─── Markdown renderer ────────────────────────────────────────────────────────
+
+function renderInline(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*)/)
+  return parts.map((part, i) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>
+      : part
+  )
+}
+
+function renderMarkdown(text: string): React.ReactNode {
+  const lines = text.split('\n')
+  const elements: React.ReactNode[] = []
+  let listItems: string[] = []
+
+  const flushList = () => {
+    if (listItems.length === 0) return
+    elements.push(
+      <ul key={elements.length} className="my-1 space-y-0.5 pl-2">
+        {listItems.map((item, i) => (
+          <li key={i} className="flex gap-1.5 items-start">
+            <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-current opacity-40" />
+            <span>{renderInline(item)}</span>
+          </li>
+        ))}
+      </ul>
+    )
+    listItems = []
+  }
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+      listItems.push(trimmed.slice(2))
+    } else {
+      flushList()
+      if (trimmed) {
+        elements.push(<p key={elements.length} className="my-0.5">{renderInline(trimmed)}</p>)
+      }
+    }
+  }
+  flushList()
+  return <>{elements}</>
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ChatWidget({
@@ -191,7 +237,7 @@ export default function ChatWidget({
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {msg.content}
+                  {msg.role === 'assistant' ? renderMarkdown(msg.content) : msg.content}
                 </div>
               </div>
             ))}
