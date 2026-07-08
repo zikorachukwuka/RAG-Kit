@@ -83,16 +83,10 @@ CREATE TABLE IF NOT EXISTS ai_gaps (
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── RLS ─────────────────────────────────────────────────────────────────────
--- RLS is intentionally enabled on all tables with no client-side policies.
--- This blocks all access via Supabase's public PostgREST API (anon/authenticated
--- roles), which is correct — this kit is server-side only and all queries run
--- through DATABASE_URL using the postgres user, which bypasses RLS automatically.
---
--- Supabase's linter will show an INFO notice ("RLS enabled, no policies").
--- This is expected and safe to ignore for a server-side-only setup.
-
 -- ─── Vector Similarity Search Function ───────────────────────────────────────
+-- Note: your database provider may warn that RLS is enabled with no policies.
+-- This is intentional — do not disable RLS to silence it. Disabling RLS exposes
+-- these tables publicly. All access in this kit is server-side and bypasses RLS.
 -- Called by the chat route to retrieve relevant knowledge base chunks.
 --
 -- Note: Supabase's linter may flag this function for a mutable search_path
