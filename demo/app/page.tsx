@@ -55,10 +55,7 @@ export default function HomePage() {
             href="https://github.com/zikorachukwuka/RAG-Kit"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs transition-colors"
-            style={{ color: 'rgba(255,255,255,0.3)' }}
-            onMouseOver={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-            onMouseOut={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
+            className="text-xs text-white/30 transition-colors hover:text-white/60"
           >
             Built with RAG Kit →
           </a>
