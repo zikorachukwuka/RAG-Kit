@@ -40,29 +40,8 @@ export default function HomePage() {
       <div className="dot-bg min-h-screen">
         <div className="hero-glow" />
 
-        {/* Nav */}
-        <nav className="relative z-10 mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <div className="flex items-center gap-2.5">
-            <div className="h-2 w-2 rounded-full bg-emerald-400" />
-            <span
-              className="text-sm font-medium"
-              style={{ color: 'rgba(255,255,255,0.6)' }}
-            >
-              Nigerian HR Compliance AI
-            </span>
-          </div>
-          <a
-            href="https://github.com/zikorachukwuka/RAG-Kit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-white/25 transition-colors hover:text-white/50"
-          >
-            GitHub ↗
-          </a>
-        </nav>
-
         {/* Hero */}
-        <section className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-20 text-center">
+        <section className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-28 text-center">
           {/* RAG Kit badge */}
           <a
             href="https://github.com/zikorachukwuka/RAG-Kit"
