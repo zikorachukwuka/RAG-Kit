@@ -26,61 +26,60 @@ export async function POST(request: Request) {
       )
     }
 
-    // 1. Verify conversation exists
-    const [conversation] = await sql`
-      SELECT id FROM conversations WHERE id = ${conversation_id} LIMIT 1
-    `
+    // 1. Fetch conversation and history in parallel
+    const [[conversation], history] = await Promise.all([
+      sql`SELECT id FROM conversations WHERE id = ${conversation_id} LIMIT 1`,
+      sql<{ role: string; content: string }[]>`
+        SELECT role, content
+        FROM messages
+        WHERE conversation_id = ${conversation_id}
+        ORDER BY created_at ASC
+        LIMIT 12
+      `,
+    ])
+
     if (!conversation) {
       return NextResponse.json({ error: 'Conversation not found.' }, { status: 404 })
     }
 
-    // 2. Fetch recent history BEFORE saving the new message
-    //    (prevents sending the current message twice to the model)
-    const history = await sql<{ role: string; content: string }[]>`
-      SELECT role, content
-      FROM messages
-      WHERE conversation_id = ${conversation_id}
-      ORDER BY created_at ASC
-      LIMIT 12
-    `
+    // 2. Save user message and embed query in parallel
+    const [, queryEmbedding] = await Promise.all([
+      sql`INSERT INTO messages (conversation_id, role, content)
+          VALUES (${conversation_id}, 'user', ${message})`,
+      embedOne(message).catch((e) => {
+        console.error('Embedding error:', e)
+        return null
+      }),
+    ])
 
-    // 3. Save the user message
-    await sql`
-      INSERT INTO messages (conversation_id, role, content)
-      VALUES (${conversation_id}, 'user', ${message})
-    `
-
-    // 4. RAG — embed the query and retrieve relevant chunks
+    // 3. RAG — retrieve relevant chunks (needs embedding result)
     let knowledgeContext = ''
-    try {
-      const queryEmbedding = await embedOne(message)
-      // pgvector expects the embedding as a literal array string
-      const embeddingLiteral = `[${queryEmbedding.join(',')}]`
-
-      const matches = await sql<{ title: string; content: string; score: number }[]>`
-        SELECT title, content, score
-        FROM match_knowledge_base(
-          ${embeddingLiteral}::vector,
-          ${MATCH_THRESHOLD},
-          ${MATCH_COUNT}
-        )
-      `
-
-      if (matches.length > 0) {
-        knowledgeContext = matches
-          .map((m) => `### ${m.title}\n${m.content}`)
-          .join('\n\n')
+    if (queryEmbedding) {
+      try {
+        const embeddingLiteral = `[${queryEmbedding.join(',')}]`
+        const matches = await sql<{ title: string; content: string; score: number }[]>`
+          SELECT title, content, score
+          FROM match_knowledge_base(
+            ${embeddingLiteral}::vector,
+            ${MATCH_THRESHOLD},
+            ${MATCH_COUNT}
+          )
+        `
+        if (matches.length > 0) {
+          knowledgeContext = matches
+            .map((m) => `### ${m.title}\n${m.content}`)
+            .join('\n\n')
+        }
+      } catch (ragError) {
+        // RAG failure is non-fatal — fall through to answer without context
+        console.error('RAG retrieval error:', ragError)
       }
-    } catch (ragError) {
-      // RAG failure is non-fatal — fall through to answer without context
-      console.error('RAG retrieval error:', ragError)
     }
 
-    // 5. Build system prompt
+    // 4. Build system prompt and messages
     const contextSection = knowledgeContext || NO_CONTEXT_MESSAGE
     const systemPrompt   = SYSTEM_PROMPT.replace(KNOWLEDGE_CONTEXT_SLOT, contextSection)
 
-    // 6. Build messages array
     const chatMessages: ChatMessage[] = [
       { role: 'system', content: systemPrompt },
       ...history.map((m) => ({
@@ -90,7 +89,7 @@ export async function POST(request: Request) {
       { role: 'user', content: message },
     ]
 
-    // 7. Call the chat model
+    // 5. Call the chat model
     let aiResponse: string
     try {
       aiResponse = await chat(chatMessages)
@@ -104,19 +103,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ ai_response: fallback })
     }
 
-    // 8. Log gap if no knowledge base context was found
-    if (!knowledgeContext) {
-      await sql`
-        INSERT INTO ai_gaps (question, conversation_id)
-        VALUES (${message}, ${conversation_id})
-      `.catch((e) => console.error('Failed to log gap:', e))
-    }
-
-    // 9. Save AI response
-    await sql`
-      INSERT INTO messages (conversation_id, role, content)
-      VALUES (${conversation_id}, 'assistant', ${aiResponse})
-    `
+    // 6. Save AI response and log gap in parallel
+    await Promise.all([
+      sql`INSERT INTO messages (conversation_id, role, content)
+          VALUES (${conversation_id}, 'assistant', ${aiResponse})`,
+      knowledgeContext
+        ? Promise.resolve()
+        : sql`INSERT INTO ai_gaps (question, conversation_id)
+              VALUES (${message}, ${conversation_id})`.catch((e) =>
+            console.error('Failed to log gap:', e)
+          ),
+    ])
 
     return NextResponse.json({ ai_response: aiResponse })
   } catch (err) {
