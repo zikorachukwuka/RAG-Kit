@@ -16,7 +16,7 @@ export default function HomePage() {
       {/* Hero */}
       <section className="mx-auto max-w-3xl px-6 py-24 text-center">
         <a
-          href="https://github.com/yourusername/rag-kit"
+          href="https://github.com/zikorachukwuka/RAG-Kit"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700 hover:bg-indigo-200 transition"
@@ -79,7 +79,7 @@ export default function HomePage() {
           </ol>
           <div className="mt-10 text-center">
             <a
-              href="https://github.com/yourusername/rag-kit"
+              href="https://github.com/zikorachukwuka/RAG-Kit"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-medium text-white hover:bg-gray-700 transition"

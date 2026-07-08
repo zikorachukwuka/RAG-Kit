@@ -2,7 +2,7 @@
 
 A copy-paste RAG system for Next.js developers. Drop it into any project, point it at your documents, and ship a production-grade AI assistant in an afternoon.
 
-**[→ See the live demo](https://your-demo-url.vercel.app)**, a Nigerian Compliance AI built entirely with RAG Kit.
+**[→ See the live demo](https://rag-kit-demo.vercel.app)**, a Nigerian Compliance AI built entirely with RAG Kit.
 
 ---
 
@@ -54,6 +54,7 @@ Copy these into your Next.js project, preserving the folder structure:
 
 ```
 schema.sql
+postcss.config.mjs
 lib/db.ts
 lib/embeddings.ts
 lib/chat.ts
@@ -169,7 +170,7 @@ RAG Kit requires Postgres with the pgvector extension. Any provider works:
 
 ## Demo
 
-The `demo/` folder in this repo is a complete Next.js app built with RAG Kit — a Nigerian HR and compliance chatbot. It's deployed at [your-demo-url.vercel.app](https://your-demo-url.vercel.app).
+The `demo/` folder in this repo is a complete Next.js app built with RAG Kit — a Nigerian HR and compliance chatbot. It's deployed at [your-demo-url.vercel.app](https://rag-kit-demo.vercel.app).
 
 To run the demo locally:
 
