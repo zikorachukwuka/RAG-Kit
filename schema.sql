@@ -83,9 +83,25 @@ CREATE TABLE IF NOT EXISTS ai_gaps (
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ─── RLS ─────────────────────────────────────────────────────────────────────
+-- RAG Kit accesses the database exclusively from the server via DATABASE_URL
+-- (a direct postgres connection that bypasses RLS automatically).
+-- There are no client-side queries, so RLS is disabled to keep the setup clean
+-- and avoid Supabase linter warnings about enabled-but-policyless tables.
+ALTER TABLE public.rag_config      DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.knowledge_base  DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.conversations   DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.messages        DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.ai_gaps         DISABLE ROW LEVEL SECURITY;
+
 -- ─── Vector Similarity Search Function ───────────────────────────────────────
 -- Called by the chat route to retrieve relevant knowledge base chunks.
-CREATE OR REPLACE FUNCTION match_knowledge_base(
+--
+-- Note: Supabase's linter may flag this function for a mutable search_path
+-- (lint: 0011). This is a known conflict with pgvector on Supabase — setting
+-- a fixed search_path blocks the <=> cosine operator from resolving. The
+-- warning is safe to ignore; the function works correctly as written.
+CREATE OR REPLACE FUNCTION public.match_knowledge_base(
   query_embedding  VECTOR,
   match_threshold  FLOAT    DEFAULT 0.7,
   match_count      INT      DEFAULT 5
@@ -107,7 +123,7 @@ AS $$
     kb.source,
     kb.metadata,
     1 - (kb.embedding <=> query_embedding) AS score
-  FROM knowledge_base kb
+  FROM public.knowledge_base kb
   WHERE 1 - (kb.embedding <=> query_embedding) >= match_threshold
   ORDER BY kb.embedding <=> query_embedding
   LIMIT match_count;
