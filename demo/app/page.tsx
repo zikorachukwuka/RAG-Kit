@@ -63,19 +63,21 @@ export default function HomePage() {
 
         {/* Hero */}
         <section className="relative z-10 mx-auto max-w-4xl px-6 pb-16 pt-20 text-center">
-          {/* Live badge */}
-          <div
-            className="mb-8 inline-flex items-center gap-2 rounded-full px-3 py-1"
+          {/* RAG Kit badge */}
+          <a
+            href="https://github.com/zikorachukwuka/RAG-Kit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10"
             style={{
-              border: '1px solid rgba(255,255,255,0.09)',
-              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(74,222,128,0.2)',
+              background: 'rgba(74,222,128,0.06)',
+              color: 'rgba(74,222,128,0.85)',
             }}
           >
-            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              NTA 2025 · Effective January 2026
-            </span>
-          </div>
+            <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            This demo was built with RAG Kit — view on GitHub →
+          </a>
 
           {/* Headline */}
           <h1
