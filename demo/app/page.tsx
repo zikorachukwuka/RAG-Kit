@@ -55,9 +55,9 @@ export default function HomePage() {
             href="https://github.com/zikorachukwuka/RAG-Kit"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-white/30 transition-colors hover:text-white/60"
+            className="text-xs text-white/25 transition-colors hover:text-white/50"
           >
-            Built with RAG Kit →
+            GitHub ↗
           </a>
         </nav>
 
@@ -68,15 +68,14 @@ export default function HomePage() {
             href="https://github.com/zikorachukwuka/RAG-Kit"
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10"
+            className="mb-8 inline-flex items-center rounded-full px-4 py-1.5 text-xs font-medium transition-colors"
             style={{
-              border: '1px solid rgba(74,222,128,0.2)',
-              background: 'rgba(74,222,128,0.06)',
-              color: 'rgba(74,222,128,0.85)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.04)',
+              color: 'rgba(255,255,255,0.45)',
             }}
           >
-            <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            This demo was built with RAG Kit — view on GitHub →
+            This demo was built with RAG Kit ↗
           </a>
 
           {/* Headline */}
