@@ -17,5 +17,8 @@ build/
 .DS_Store
 Thumbs.db
 
+# Personal setup file — not for the public repo
+DROPZONE.txt
+
 # Logs
 *.log
