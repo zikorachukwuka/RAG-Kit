@@ -84,15 +84,13 @@ CREATE TABLE IF NOT EXISTS ai_gaps (
 );
 
 -- ─── RLS ─────────────────────────────────────────────────────────────────────
--- RAG Kit accesses the database exclusively from the server via DATABASE_URL
--- (a direct postgres connection that bypasses RLS automatically).
--- There are no client-side queries, so RLS is disabled to keep the setup clean
--- and avoid Supabase linter warnings about enabled-but-policyless tables.
-ALTER TABLE public.rag_config      DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.knowledge_base  DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.conversations   DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.messages        DISABLE ROW LEVEL SECURITY;
-ALTER TABLE public.ai_gaps         DISABLE ROW LEVEL SECURITY;
+-- RLS is intentionally enabled on all tables with no client-side policies.
+-- This blocks all access via Supabase's public PostgREST API (anon/authenticated
+-- roles), which is correct — this kit is server-side only and all queries run
+-- through DATABASE_URL using the postgres user, which bypasses RLS automatically.
+--
+-- Supabase's linter will show an INFO notice ("RLS enabled, no policies").
+-- This is expected and safe to ignore for a server-side-only setup.
 
 -- ─── Vector Similarity Search Function ───────────────────────────────────────
 -- Called by the chat route to retrieve relevant knowledge base chunks.
